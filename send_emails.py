@@ -1,58 +1,63 @@
 import smtplib
 from email.message import EmailMessage
 
-# Configuration
-SMTP_SERVER = "smtp.gmail.com"
-SMTP_PORT = 587
-SENDER_EMAIL = "jmiller.scholars@gmail.com"  # Your Gmail address
-SENDER_PASSWORD = "akdk kzcb kbfk azve"  # Your Gmail app password
 
-def send_email(recipient_email, subject, body):
-    """
-    Sends an email with the specified subject and body to the recipient.
-
-    Args:
-        recipient_email (str): The email address of the recipient.
-        subject (str): The subject of the email.
-        body (str): The body content of the email.
-    """
+def send_email(recipient_email):
+    SMTP_SERVER = "smtp.gmail.com"
+    SMTP_PORT = 587
+    SENDER_EMAIL = "jmiller.scholars@gmail.com"  # Gmail address
+    SENDER_PASSWORD = "akdk kzcb kbfk azve"  # Gmail app password
+#----------------------------------------------------------------------------------------------------------------------------------------------
+    # Create the email message
     msg = EmailMessage()
-    msg['Subject'] = subject
-    msg['From'] = SENDER_EMAIL
+    msg['Subject'] = "Scholarship Information"
+    msg['From'] = SENDER_EMAIL  # Corrected variable name
     msg['To'] = recipient_email
-    msg.set_content(body)
 
+    # HTML for the email
+    html_content = """
+    <html>
+        <body>
+            <p>Dear Sir/Ma'am,</p>
+            <p>You are receiving this information because there are potential scholarships and/or financial reimbursements available to you based on criteria you have recently met.
+            Please follow the link below to view the relevant scholarship information:</p>
+            <p>
+                <a href="https://2ly.link/21JVG" style="color: blue;">Scholar Information</a>
+            </p>
+            <p>These opportunities are limited in capacity, so please act quickly.</p>
+            <p><strong>Thank you for your prompt attention to this matter.</strong></p>
+            <p><strong>Best regards,<br>Jason Miller</strong></p>
+        </body>
+    </html>
+    """
+    # Set the content type to HTML
+    msg.add_alternative(html_content, subtype='html')
+#---------------------------------------------------------------------------------------------------------------------
     try:
+        # Connect to the SMTP server and send the email
         with smtplib.SMTP(SMTP_SERVER, SMTP_PORT) as smtp:
-            smtp.starttls()  # Secure the connection
-            smtp.login(SENDER_EMAIL, SENDER_PASSWORD)  # Log in to the SMTP server
-            smtp.send_message(msg)  # Send the email
-            print(f"Email sent successfully to {recipient_email}")
+            smtp.starttls()  # Upgrade the connection to secure
+            smtp.login(SENDER_EMAIL, SENDER_PASSWORD)
+            smtp.send_message(msg)
+            print(f"Email sent to {recipient_email}")
+    except smtplib.SMTPAuthenticationError:
+        print("Authentication failed. Please check your credentials.")
+    except smtplib.SMTPException as e:
+        print(f"SMTP error occurred: {e}")
     except Exception as e:
-        print(f"Failed to send email to {recipient_email}: {e}")
-
-def send_phishing_simulation_email(recipient_email):
-    """
-    Sends a phishing simulation email to the specified recipient.
-
-    Args:
-        recipient_email (str): The email address of the recipient.
-    """
-    tracking_link = f"http://127.0.0.1:80/phishing?id={recipient_email}"  # Replace with actual server address
-    subject = "Grandma Is sick"
-    body = f"""
-    Hey Steven,
-
-    your grandmother has gotten sick
-
-    {tracking_link}
-
-    Thank you,
-    """
-    send_email(recipient_email, subject, body)
-
-# Example usage
-if __name__ == "__main__":
-    email_list = ["stevenkline27@gmail.com"]  # List of recipients
-    for email in email_list:
-        send_phishing_simulation_email(email)
+        print(f"Failed to send email: {e}")
+#----------------------------------------------------------------------------------------------------------------------
+email_list = ["kylinhertz7@gmail.com", "stevenkline27@gmail.com",
+"froggetier@gmail.com",
+"josip.kline@outlook.com",
+"esk525@gmail.com",
+"officialjohnsmithreal@gmail.com",
+"rbigreesejr@gmail.com",
+"adriancaronna@gmail.com",
+"throwawayhirsch@gmail.com",
+"YaynaraPeralta4@gmail.com",
+"sofiadakota@icloud.com",
+"michaelwallen0704@gmail.com",
+"isama1213@gmail.com"]
+for email in email_list:
+    send_email(email)
